@@ -297,7 +297,7 @@ class _RatingsPage extends StatelessWidget {
             children: [
               Text(
                 title,
-                style: AppTypography.h5,
+                style: AppTypography.h4,
               ),
               const SizedBox(height: 6),
               Text(
