@@ -122,9 +122,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         padding: const EdgeInsets.all(16),
                         backgroundColor: const Color(0xFFD1E6EB),
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.chevron_right,
-                        color: AppColors.black,
+                        color: Colors.black,
                       ),
                     ),
                   ],
