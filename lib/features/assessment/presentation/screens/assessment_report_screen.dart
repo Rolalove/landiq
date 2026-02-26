@@ -148,122 +148,7 @@ class _AssessmentReportScreenState
     }
   }
 
-  void _showSaveSheet(Assessment a) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      isScrollControlled: true,
-      builder: (ctx) => Container(
-        padding: const EdgeInsets.all(24),
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Handle
-            Center(
-              child: Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: AppColors.grey300,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
 
-            // Title
-            const Text(
-              'Save This Assessment?',
-              style: TextStyle(
-                color: AppColors.secondary,
-                fontSize: 18,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 8),
-            const Text(
-              'Save this assessment permanently to your dashboard. Once saved, you can access it anytime from the Saved tab.',
-              style: TextStyle(
-                color: AppColors.textSecondary,
-                fontSize: 13,
-                height: 1.5,
-              ),
-            ),
-            const SizedBox(height: 24),
-
-            // Save permanently
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton.icon(
-                onPressed: _isSaving ? null : () {
-                  Navigator.pop(ctx);
-                  _saveAssessment(a);
-                },
-                icon: const Icon(Icons.bookmark_add, size: 18),
-                label: _isSaving
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          color: Colors.white,
-                        ),
-                      )
-                    : const Text('Save Permanently'),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primary,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 12),
-
-            // Dismiss — expires in 24hrs
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {
-                  Navigator.pop(ctx);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        'This assessment will expire in 24 hours',
-                        style: TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      backgroundColor: Color(0xFFE65100),
-                      behavior: SnackBarBehavior.floating,
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.timer_outlined, size: 18),
-                label: const Text('Dismiss — expires in 24h'),
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFFE65100),
-                  side: const BorderSide(color: Color(0xFFE65100)),
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
-                  ),
-                ),
-              ),
-            ),
-
-            SizedBox(height: MediaQuery.of(ctx).viewInsets.bottom + 16),
-          ],
-        ),
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -361,13 +246,21 @@ class _AssessmentReportScreenState
             const SizedBox(height: 24),
 
             // ── Save prompt button ──
-            if (assessment.isTemporary)
+            if (assessment.isTemporary) ...[
               AppButton(
                 label: 'Save Assessment',
-                onPressed: () => _showSaveSheet(assessment),
+                onPressed: () => _saveAssessment(assessment),
                 showTrailingArrow: false,
-                isLoading: false,
+                isLoading: _isSaving,
               ),
+              const SizedBox(height: 12),
+              AppButton(
+                label: 'Cancel',
+                variant: AppButtonVariant.secondary,
+                onPressed: () => context.goNamed('home'),
+                showTrailingArrow: false,
+              ),
+            ],
             const SizedBox(height: 32),
           ],
         ),

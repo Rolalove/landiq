@@ -19,11 +19,11 @@ class StatCard extends StatelessWidget {
     return Container(
   padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
   decoration: BoxDecoration(
-    color: AppColors.background2,
+    color: AppColors.cardBackground,
     borderRadius: BorderRadius.circular(12),
     border: Border.all(
       color: AppColors.border,
-      width: 1.5,
+      width: 1.0,
     ),
   ),
   child: Column(

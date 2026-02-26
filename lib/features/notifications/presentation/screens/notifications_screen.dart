@@ -26,7 +26,7 @@ class NotificationsScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Notifications', style: AppTypography.h4),
+                        Text('Notifications', style: AppTypography.h5),
                         const SizedBox(height: 2),
                         Text(
                           'No unread notifications',

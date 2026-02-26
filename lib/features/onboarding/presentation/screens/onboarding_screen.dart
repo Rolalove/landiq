@@ -124,7 +124,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       child: const Icon(
                         Icons.chevron_right,
-                        color: Colors.white,
+                        color: AppColors.black,
                       ),
                     ),
                   ],

@@ -15,7 +15,7 @@ class ProfileScreen extends ConsumerWidget {
     final user = authState.valueOrNull;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.white,
       body: Column(
         children: [
           // Gradient Header + User Card
@@ -26,8 +26,8 @@ class ProfileScreen extends ConsumerWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  Color(0xFF005461),
-                  Color(0xFF0A2E36),
+                  Color(0xFF0D5569),
+                  Color(0xFF11728C),
                 ],
               ),
             ),
@@ -49,6 +49,7 @@ class ProfileScreen extends ConsumerWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.border),
                       ),
                       child: Row(
                         children: [
@@ -241,6 +242,7 @@ class ProfileScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
       ),
       child: Column(
         children: items.asMap().entries.map((entry) {
@@ -249,10 +251,17 @@ class ProfileScreen extends ConsumerWidget {
           return Column(
             children: [
               ListTile(
-                leading: Icon(
-                  item.icon,
-                  color: AppColors.secondary,
-                  size: 22,
+                leading: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: AppColors.grey100,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    item.icon,
+                    color: AppColors.grey600,
+                    size: 20,
+                  ),
                 ),
                 title: Text(
                   item.label,

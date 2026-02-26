@@ -22,7 +22,7 @@ final authStateProvider =
 class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   final AuthRepository _repository;
 
-  AuthNotifier(this._repository) : super(const AsyncValue.loading()) {
+  AuthNotifier(this._repository) : super(const AsyncValue.data(null)) {
     // Auto-login on construction — keeps user logged in across app restarts
     tryAutoLogin();
   }
@@ -74,8 +74,12 @@ class AuthNotifier extends StateNotifier<AsyncValue<User?>> {
   // Try auto-login by checking stored token + fetching profile
   Future<bool> tryAutoLogin() async {
     final hasToken = await _repository.isAuthenticated();
-    if (!hasToken) return false;
+    if (!hasToken) {
+      state = const AsyncValue.data(null);
+      return false;
+    }
 
+    state = const AsyncValue.loading();
     try {
       final user = await _repository.getProfile();
       state = AsyncValue.data(user);

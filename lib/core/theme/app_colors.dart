@@ -11,7 +11,9 @@ class AppColors {
   static const grey100 = Color(0xFFF5F5F5);
   static const grey300 = Color(0xFFE0E0E0);
   static const grey500 = Color(0xFF9E9E9E);
+  static const grey600 = Color(0xFF757575);
   static const grey700 = Color(0xFF616161);
+  static const grey900 = Color(0xFF212121);
 
   // Semantics
   static const success = Color(0xFF2E7D32);
@@ -33,4 +35,6 @@ class AppColors {
   static const button = Color(0xFF005461);
   //border color
   static const border = Color(0xFFE0E0E0);
+  static const border2 = Color(0xFF2FBAE0);
+  static const cardBackground = Color(0xFFEDF6F9);
 }

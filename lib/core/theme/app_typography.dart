@@ -37,7 +37,7 @@ class AppTypography {
   static const h4 = TextStyle(
     fontFamily: _heading,
     fontSize: 32,
-    fontWeight: FontWeight.w600, // semi-bold
+    fontWeight: FontWeight.w500,
     color: AppColors.textPrimary,
     height: 1.0,
   );
@@ -45,7 +45,7 @@ class AppTypography {
   static const h5 = TextStyle(
     fontFamily: _heading,
     fontSize: 24,
-    fontWeight: FontWeight.w600, // semi-bold
+    fontWeight: FontWeight.w500, 
     color: AppColors.textPrimary,
     height: 1.0,
   );
@@ -53,7 +53,7 @@ class AppTypography {
   static const h6 = TextStyle(
     fontFamily: _heading,
     fontSize: 16,
-    fontWeight: FontWeight.w600, // semi-bold
+    fontWeight: FontWeight.w500, 
     color: AppColors.textPrimary,
     height: 1.0,
   );

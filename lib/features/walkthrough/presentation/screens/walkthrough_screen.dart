@@ -93,6 +93,7 @@ class _WalkthroughScreenState extends State<WalkthroughScreen> {
                 width: double.infinity,
                 child: AppButton(
                   label: 'Next',
+                  showTrailingArrow: false,
                   onPressed: () {
                     if (_currentPage < 1) {
                       _pageController.nextPage(
@@ -122,13 +123,13 @@ class _WelcomePage extends StatelessWidget {
     return SingleChildScrollView(
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(height: 16),
 
           Text(
             'Welcome to LandIQ',
-            style: AppTypography.h3,
+            style: AppTypography.h4,
           ),
 
           const SizedBox(height: 16),
@@ -160,10 +161,10 @@ class _WelcomePage extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
             decoration: BoxDecoration(
-              color: const Color(0xFFD6F0F5),
+              color: const Color(0xFFABE1EF),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color: AppColors.primary.withValues(alpha: 0.3),
+                color: AppColors.border2.withValues(alpha: 0.3),
               ),
             ),
             child: Text(
@@ -198,7 +199,7 @@ class _RatingsPage extends StatelessWidget {
             child: Text(
               'Understanding Soil\nHealth Rating',
               textAlign: TextAlign.center,
-              style: AppTypography.h3,
+              style: AppTypography.h4,
             ),
           ),
 
@@ -301,7 +302,7 @@ class _RatingsPage extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 description,
-                style: AppTypography.bodyMd.copyWith(
+                style: AppTypography.captionLg.copyWith(
                   color: AppColors.textSecondary,
                   height: 1.5,
                 ),
@@ -309,7 +310,7 @@ class _RatingsPage extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 scoreRange,
-                style: AppTypography.bodyMd.copyWith(
+                style: AppTypography.h5.copyWith(
                   color: scoreColor,
                   fontWeight: FontWeight.w600,
                 ),

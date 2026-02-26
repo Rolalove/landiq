@@ -15,46 +15,39 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
 
   final List<_FaqItem> _faqs = const [
     _FaqItem(
-      category: 'GETTING STARTED',
       question: 'How do I assess my first piece of land?',
       answer:
-          'To assess land, tap the + button on the home screen, enter the coordinates or search for the location, specify the area in hectares, and submit. LandIQ will analyze the soil data and provide a detailed report.',
+          'Search for a village or drop a pin on the map. LandIQ will instantly generate a soil health score and show what the land is suitable for, including crops, poultry, or fishery.',
     ),
     _FaqItem(
-      category: 'GETTING STARTED',
       question: 'What areas does LandIQ cover?',
       answer:
-          'LandIQ currently covers all of Nigeria with detailed soil mapping data. For locations outside Nigeria, general agricultural guidance is provided.',
+          'LandIQ currently supports selected agricultural regions in Nigeria. We are expanding coverage regularly. If your area is not available yet, check back soon for updates.',
     ),
     _FaqItem(
-      category: 'ASSESSMENTS',
       question: 'How accurate are the soil health scores?',
       answer:
-          'Our soil health scores are based on verified geospatial data and AI analysis. Scores reflect real soil properties including drainage, pH, texture, and ecological zone data.',
+          'Scores are generated using satellite imagery, soil maps, climate data, and environmental risk models. LandIQ provides reliable guidance, but for major investments, we recommend combining results with on-site inspection or lab testing.',
     ),
     _FaqItem(
-      category: 'TECHNICAL',
       question: 'What data sources does LandIQ use?',
       answer:
-          'LandIQ uses satellite imagery, soil survey databases, ecological zone maps, and AI models to generate comprehensive land assessments.',
+          'We use satellite data, regional soil maps, rainfall records, temperature trends, and erosion models to evaluate land productivity and environmental risk.',
     ),
     _FaqItem(
-      category: 'TECHNICAL',
       question: 'How often is the data updated?',
       answer:
-          'Soil data is updated quarterly. AI explanations are generated in real-time for each new assessment.',
+          'Environmental and satellite data are updated periodically to reflect seasonal and regional changes. Updates ensure your assessment reflects current conditions as accurately as possible.',
     ),
     _FaqItem(
-      category: 'ACCOUNT',
       question: 'Is my data secure and private?',
       answer:
-          'Yes. All data is encrypted in transit and at rest. We use JWT authentication and follow industry best practices for data security.',
+          'Yes. Your account information, saved plots, and reports are securely stored and encrypted. LandIQ does not sell or share your personal data without your consent.',
     ),
     _FaqItem(
-      category: 'ACCOUNT',
       question: 'Can I export my assessment reports?',
       answer:
-          'Report export functionality is coming soon. You can currently save assessments for later reference.',
+          'Yes. You can generate a downloadable PDF report and share it via email or messaging apps directly from LandIQ.',
     ),
   ];
 
@@ -102,28 +95,6 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Search
-                    TextField(
-                      controller: _searchController,
-                      decoration: InputDecoration(
-                        hintText: 'Search help articles...',
-                        hintStyle: AppTypography.bodyMd.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                        prefixIcon: const Icon(Icons.search, size: 20),
-                        filled: true,
-                        fillColor: AppColors.background2,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
-                        ),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 12),
-                      ),
-                    ),
-
-                    const SizedBox(height: 28),
-
                     // CONTACT US
                     Text(
                       'CONTACT US',
@@ -254,25 +225,6 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
     required bool isExpanded,
     required VoidCallback onTap,
   }) {
-    // Category color mapping
-    Color categoryColor;
-    switch (faq.category) {
-      case 'GETTING STARTED':
-        categoryColor = const Color(0xFF2E7D32);
-        break;
-      case 'ASSESSMENTS':
-        categoryColor = const Color(0xFF1565C0);
-        break;
-      case 'TECHNICAL':
-        categoryColor = const Color(0xFFE65100);
-        break;
-      case 'ACCOUNT':
-        categoryColor = const Color(0xFF6A1B9A);
-        break;
-      default:
-        categoryColor = AppColors.primary;
-    }
-
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
@@ -289,25 +241,12 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
             Row(
               children: [
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        faq.category,
-                        style: AppTypography.captionLg.copyWith(
-                          color: categoryColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 11,
-                          letterSpacing: 0.5,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        faq.question,
-                        style: AppTypography.bodyMd
-                            .copyWith(fontWeight: FontWeight.w500),
-                      ),
-                    ],
+                  child: Text(
+                    faq.question,
+                    style: AppTypography.bodyMd.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.grey900,
+                    ),
                   ),
                 ),
                 Icon(
@@ -326,7 +265,7 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
               Text(
                 faq.answer,
                 style: AppTypography.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
+                  color: AppColors.grey600,
                   height: 1.5,
                 ),
               ),
@@ -339,12 +278,10 @@ class _HelpSupportScreenState extends State<HelpSupportScreen> {
 }
 
 class _FaqItem {
-  final String category;
   final String question;
   final String answer;
 
   const _FaqItem({
-    required this.category,
     required this.question,
     required this.answer,
   });

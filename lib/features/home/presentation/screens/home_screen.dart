@@ -199,273 +199,328 @@ class _HomeTabState extends ConsumerState<_HomeTab> {
     final query = _searchQuery.toLowerCase().trim();
 
     return SafeArea(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Welcome back,', style: AppTypography.h5),
-                    const SizedBox(height: 10),
-                    Text(userName, style: AppTypography.bodyMd),
-                  ],
-                ),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () => context.pushNamed('notifications'),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: AppColors.background2,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: const Icon(
-                          Icons.notifications_none,
-                          size: 20,
-                        ),
+      child: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Welcome back,', style: AppTypography.h5),
+                          const SizedBox(height: 10),
+                          Text(userName, style: AppTypography.bodyMd),
+                        ],
                       ),
-                    ),
-                    const SizedBox(width: 10),
-                    Container(
-                      width: 40,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: AppColors.secondary,
-                        borderRadius: BorderRadius.circular(12),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () => context.pushNamed('notifications'),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              decoration: BoxDecoration(
+                                color: AppColors.background2,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.notifications_none,
+                                size: 20,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Container(
+                            width: 40,
+                            height: 40,
+                            decoration: BoxDecoration(
+                              color: AppColors.secondary,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.person,
+                              color: Colors.white,
+                              size: 22,
+                            ),
+                          ),
+                        ],
                       ),
-                      child: const Icon(
-                        Icons.person,
-                        color: Colors.white,
-                        size: 22,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-
-            const SizedBox(height: 24),
-
-            // Search Bar
-            TextField(
-              controller: _searchController,
-              onChanged: (v) => setState(() => _searchQuery = v),
-              decoration: InputDecoration(
-                hintText: 'Search by state or badge...',
-                hintStyle: AppTypography.bodyMd.copyWith(
-                  color: AppColors.textSecondary,
-                ),
-                prefixIcon: const Icon(Icons.search, size: 20),
-                suffixIcon: _searchQuery.isNotEmpty
-                    ? IconButton(
-                        icon: const Icon(Icons.close, size: 18),
-                        onPressed: () {
-                          _searchController.clear();
-                          setState(() => _searchQuery = '');
-                        },
-                      )
-                    : null,
-                filled: true,
-                fillColor: Colors.white,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: const BorderSide(color: AppColors.border),
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: const BorderSide(color: AppColors.border),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(14),
-                  borderSide: BorderSide(color: AppColors.primary),
-                ),
-                contentPadding: const EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 14,
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // Stats Grid -- computed from API data
-            assessmentsAsync.maybeWhen(
-              data: (assessments) {
-                final count = assessments.length;
-                final avgScore = count > 0
-                    ? (assessments.fold<int>(
-                            0, (sum, a) => sum + (a.soilHealth.totalScore ?? 0)) /
-                        count)
-                        .round()
-                    : 0;
-
-                return GridView.count(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  childAspectRatio: 0.85,
-                  children: [
-                    StatCard(
-                      icon: Icons.analytics_outlined,
-                      number: '$count',
-                      label: 'Lands Assessed',
-                    ),
-                    StatCard(
-                      icon: Icons.bookmark_outline,
-                      number: '$count',
-                      label: 'Saved',
-                    ),
-                    StatCard(
-                      icon: Icons.workspace_premium_outlined,
-                      number: '$avgScore',
-                      label: 'Avg Score',
-                    ),
-                  ],
-                );
-              },
-              loading: assessmentsAsync.hasValue ? null : () => _HomeScreenState.buildStatsSkeleton(),
-              orElse: () => GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 3,
-                crossAxisSpacing: 12,
-                mainAxisSpacing: 12,
-                childAspectRatio: 0.85,
-                children: const [
-                  StatCard(icon: Icons.analytics_outlined, number: '0', label: 'Lands Assessed'),
-                  StatCard(icon: Icons.bookmark_outline, number: '0', label: 'Saved'),
-                  StatCard(icon: Icons.workspace_premium_outlined, number: '0', label: 'Avg Score'),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 28),
-
-            /// Recent Assessments Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text('Recent Assessments', style: AppTypography.bodyLg),
-                GestureDetector(
-                  onTap: () => context.pushNamed('allAssessments'),
-                  child: Text(
-                    'View All',
-                    style: AppTypography.bodyMd.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    ],
                   ),
-                ),
-              ],
-            ),
 
-            const SizedBox(height: 14),
+                  const SizedBox(height: 24),
 
-            // Recent Assessment Cards -- from API
-            assessmentsAsync.maybeWhen(
-              data: (assessments) {
-                // Filter by search query
-                var filtered = assessments;
-                if (query.isNotEmpty) {
-                  filtered = assessments.where((a) {
-                    final state = NigerianStates.reverseGeocode(
-                      a.location.latitude, a.location.longitude).toLowerCase();
-                    final badge = (a.soilHealth.badge ?? '').toLowerCase();
-                    return state.contains(query) || badge.contains(query);
-                  }).toList();
-                }
-
-                if (filtered.isEmpty) {
-                  return Container(
-                    padding: const EdgeInsets.all(24),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    child: Center(
-                      child: Text(
-                        query.isNotEmpty
-                            ? 'No results for "$query"'
-                            : 'No assessments yet\nTap + to create your first',
-                        textAlign: TextAlign.center,
-                        style: AppTypography.bodyMd.copyWith(
-                          color: AppColors.textSecondary,
-                        ),
-                      ),
-                    ),
-                  );
-                }
-
-                // Show up to 3 most recent
-                final recent = filtered.take(3).toList();
-                return Column(
-                  children: recent.map((a) {
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _RecentAssessmentCard(assessment: a),
-                    );
-                  }).toList(),
-                );
-              },
-              loading: assessmentsAsync.hasValue ? null : () => Column(
-                children: const [
-                  RecentAssessmentSkeleton(),
-                  SizedBox(height: 12),
-                  RecentAssessmentSkeleton(),
-                ],
-              ),
-              orElse: () => Container(
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Column(
-                  children: [
-                    Icon(Icons.landscape_outlined,
-                        size: 48, color: AppColors.grey500),
-                    const SizedBox(height: 12),
-                    Text(
-                      'No assessments yet',
-                      style: AppTypography.bodyMd.copyWith(
+                  // Search Bar
+                  TextField(
+                    controller: _searchController,
+                    onChanged: (v) => setState(() => _searchQuery = v),
+                    decoration: InputDecoration(
+                      hintText: 'Search by state or badge...',
+                      hintStyle: AppTypography.bodyMd.copyWith(
                         color: AppColors.textSecondary,
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Tap + to create your first assessment',
-                      style: AppTypography.captionLg.copyWith(
-                        color: AppColors.grey500,
+                      prefixIcon: const Icon(Icons.search, size: 20),
+                      suffixIcon: _searchQuery.isNotEmpty
+                          ? IconButton(
+                              icon: const Icon(Icons.close, size: 18),
+                              onPressed: () {
+                                _searchController.clear();
+                                setState(() => _searchQuery = '');
+                              },
+                            )
+                          : null,
+                      filled: true,
+                      fillColor: AppColors.cardBackground,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(color: AppColors.border),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(color: AppColors.border),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(14),
+                        borderSide: const BorderSide(color: AppColors.primary),
+                      ),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 14,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    GestureDetector(
-                      onTap: () => ref.invalidate(assessmentsListProvider),
-                      child: Text(
-                        'Refresh',
-                        style: AppTypography.captionLg.copyWith(
-                          color: AppColors.primary,
-                          fontWeight: FontWeight.w600,
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  // Stats Grid -- computed from API data
+                  assessmentsAsync.maybeWhen(
+                    data: (assessments) {
+                      final count = assessments.length;
+                      final avgScore = count > 0
+                          ? (assessments.fold<int>(
+                                  0,
+                                  (sum, a) =>
+                                      sum + (a.soilHealth.totalScore ?? 0)) /
+                              count)
+                              .round()
+                          : 0;
+
+                      return GridView.count(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                        childAspectRatio: 0.85,
+                        children: [
+                          StatCard(
+                            icon: Icons.analytics_outlined,
+                            number: '$count',
+                            label: 'Lands Assessed',
+                          ),
+                          StatCard(
+                            icon: Icons.bookmark_outline,
+                            number: '$count',
+                            label: 'Saved',
+                          ),
+                          StatCard(
+                            icon: Icons.workspace_premium_outlined,
+                            number: '$avgScore',
+                            label: 'Avg Score',
+                          ),
+                        ],
+                      );
+                    },
+                    loading: assessmentsAsync.hasValue
+                        ? null
+                        : () => _HomeScreenState.buildStatsSkeleton(),
+                    orElse: () => GridView.count(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      childAspectRatio: 0.85,
+                      children: const [
+                        StatCard(
+                            icon: Icons.analytics_outlined,
+                            number: '0',
+                            label: 'Lands Assessed'),
+                        StatCard(
+                            icon: Icons.bookmark_outline,
+                            number: '0',
+                            label: 'Saved'),
+                        StatCard(
+                            icon: Icons.workspace_premium_outlined,
+                            number: '0',
+                            label: 'Avg Score'),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 28),
+
+                  /// Recent Assessments Header
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Recent Assessments', style: AppTypography.bodyLg),
+                      GestureDetector(
+                        onTap: () => context.pushNamed('allAssessments'),
+                        child: Text(
+                          'View All',
+                          style: AppTypography.bodyMd.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                ],
+              ),
+            ),
+          ),
+
+          // Content section (List or Empty State)
+          assessmentsAsync.maybeWhen(
+            data: (assessments) {
+              // Filter by search query
+              var filtered = assessments;
+              if (query.isNotEmpty) {
+                filtered = assessments.where((a) {
+                  final state = NigerianStates.reverseGeocode(
+                          a.location.latitude, a.location.longitude)
+                      .toLowerCase();
+                  final badge = (a.soilHealth.badge ?? '').toLowerCase();
+                  return state.contains(query) || badge.contains(query);
+                }).toList();
+              }
+
+              if (filtered.isEmpty) {
+                return SliverFillRemaining(
+                  hasScrollBody: false,
+                  child: Center(
+                    child: _buildEmptyStateBox(query.isNotEmpty
+                        ? 'No results for "$query"'
+                        : 'No assessments yet\nTap + to create your first'),
+                  ),
+                );
+              }
+
+              // Show up to 3 most recent
+              final recent = filtered.take(3).toList();
+              return SliverPadding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                sliver: SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) => Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: _RecentAssessmentCard(assessment: recent[index]),
                     ),
-                  ],
+                    childCount: recent.length,
+                  ),
+                ),
+              );
+            },
+            loading: assessmentsAsync.hasValue
+                ? null
+                : () => SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverList(
+                        delegate: SliverChildListDelegate(const [
+                          RecentAssessmentSkeleton(),
+                          SizedBox(height: 12),
+                          RecentAssessmentSkeleton(),
+                        ]),
+                      ),
+                    ),
+            orElse: () => SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(
+                child: _buildCenteredEmptyState(),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildEmptyStateBox(String message) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Center(
+        child: Text(
+          message,
+          textAlign: TextAlign.center,
+          style: AppTypography.bodyMd.copyWith(
+            color: AppColors.textSecondary,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCenteredEmptyState() {
+    return Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppColors.grey100,
+              shape: BoxShape.circle,
+              border: Border.all(color: AppColors.border),
+            ),
+            child: Icon(Icons.landscape_outlined,
+                size: 40, color: AppColors.primary),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            'No assessments yet',
+            style: AppTypography.h6.copyWith(
+              color: AppColors.secondary,
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            'Tap the + button below to create your\nfirst soil health assessment.',
+            textAlign: TextAlign.center,
+            style: AppTypography.captionLg.copyWith(
+              color: AppColors.textSecondary,
+              height: 1.5,
+            ),
+          ),
+          const SizedBox(height: 20),
+          GestureDetector(
+            onTap: () => ref.invalidate(assessmentsListProvider),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              decoration: BoxDecoration(
+                color: AppColors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.border),
+              ),
+              child: Text(
+                'Refresh',
+                style: AppTypography.captionLg.copyWith(
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
                 ),
               ),
             ),
-
-            const SizedBox(height: 24),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -549,9 +604,12 @@ class _RecentAssessmentCardState extends ConsumerState<_RecentAssessmentCard> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(16),
-          border: _isLoading ? Border.all(color: AppColors.primary, width: 1) : null,
+          border: Border.all(
+            color: _isLoading ? AppColors.primary : AppColors.border,
+            width: 1.0,
+          ),
         ),
         child: Stack(
           children: [

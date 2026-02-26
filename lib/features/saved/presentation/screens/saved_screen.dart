@@ -173,6 +173,10 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
                     borderRadius: BorderRadius.circular(12),
                     borderSide: const BorderSide(color: AppColors.border),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: AppColors.primary),
+                  ),
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 12,
@@ -279,37 +283,64 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
                 },
                 loading: assessmentsAsync.hasValue ? null : () => const AppLoadingScreen(message: 'Loading saved assessments...'),
                 orElse: () => Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.bookmark_border,
-                          size: 56, color: AppColors.grey500),
-                      const SizedBox(height: 12),
-                      Text(
-                        'No saved assessments yet',
-                        style: AppTypography.bodyMd.copyWith(
-                          color: AppColors.textSecondary,
+                  child: Container(
+                    padding: const EdgeInsets.all(32),
+                    margin: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: AppColors.cardBackground,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: AppColors.border),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: AppColors.white,
+                            shape: BoxShape.circle,
+                            border: Border.all(color: AppColors.border),
+                          ),
+                          child: Icon(Icons.bookmark_border,
+                              size: 40, color: AppColors.primary),
                         ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Create an assessment and save it',
-                        style: AppTypography.captionLg.copyWith(
-                          color: AppColors.grey500,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      GestureDetector(
-                        onTap: () => ref.invalidate(assessmentsListProvider),
-                        child: Text(
-                          'Refresh',
-                          style: AppTypography.captionLg.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w600,
+                        const SizedBox(height: 20),
+                        Text(
+                          'No saved assessments',
+                          style: AppTypography.h6.copyWith(
+                            color: AppColors.secondary,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 8),
+                        Text(
+                          'Your saved assessments will appear here for easy access later.',
+                          textAlign: TextAlign.center,
+                          style: AppTypography.captionLg.copyWith(
+                            color: AppColors.textSecondary,
+                            height: 1.5,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () => ref.invalidate(assessmentsListProvider),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              color: AppColors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Text(
+                              'Refresh',
+                              style: AppTypography.captionLg.copyWith(
+                                color: AppColors.primary,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -359,8 +390,9 @@ class _SavedScreenState extends ConsumerState<SavedScreen> {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.cardBackground,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColors.border),
         ),
         child: Column(
           children: [
