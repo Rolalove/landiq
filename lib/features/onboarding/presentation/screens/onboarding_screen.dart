@@ -13,6 +13,21 @@ class OnboardingScreen extends StatefulWidget {
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final PageController _controller = PageController();
   int _currentPage = 0;
+  bool _initialized = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      for (final page in pages) {
+        final imagePath = page['image']!;
+        precacheImage(AssetImage(imagePath), context);
+      }
+      // Precache GetStarted image even earlier
+      precacheImage(const AssetImage('assets/images/onboarding/Getstarted.jpg'), context);
+      _initialized = true;
+    }
+  }
 
   final List<Map<String, String>> pages = [
     {

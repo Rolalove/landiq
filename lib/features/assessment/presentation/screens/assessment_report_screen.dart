@@ -134,10 +134,7 @@ class _AssessmentReportScreenState
       // but for now context.goNamed('home') defaults to Home tab.
       // THE BETTER WAY: Use the router state or a specific route if defined.
       // For LandIQ, home route handles index.
-      context.go('/?tab=1'); // Force Saved tab if router supports it, or just home and user clicks.
-      // Wait, let's check app_router.dart if it handles tab.
-      // If not, just context.goNamed('home') is fine, but user said "lead to sav screen".
-      // Let's assume the user wants to see the saved list immediately.
+      context.goNamed('allAssessments');
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(

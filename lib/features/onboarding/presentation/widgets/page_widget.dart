@@ -12,7 +12,11 @@ class PageWidget extends StatelessWidget {
       width: double.infinity,
       height: double.infinity,
       decoration: BoxDecoration(
-        image: DecorationImage(image: AssetImage(image), fit: BoxFit.cover),
+        image: DecorationImage(
+          image: AssetImage(image),
+          fit: BoxFit.cover,
+          filterQuality: FilterQuality.high,
+        ),
       ),
       child: Container(
         // optional dark overlay for better text visibility

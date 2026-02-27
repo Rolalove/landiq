@@ -4,8 +4,25 @@ import 'package:landiq/core/theme/app_buttons.dart';
 import 'package:landiq/core/theme/app_colors.dart';
 import 'package:landiq/core/theme/app_sizes.dart';
 
-class GetStartedScreen extends StatelessWidget {
+class GetStartedScreen extends StatefulWidget {
   const GetStartedScreen({super.key});
+
+  @override
+  State<GetStartedScreen> createState() => _GetStartedScreenState();
+}
+
+class _GetStartedScreenState extends State<GetStartedScreen> {
+  bool _initialized = false;
+  static const String _imagePath = 'assets/images/onboarding/Getstarted.jpg';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initialized) {
+      precacheImage(const AssetImage(_imagePath), context);
+      _initialized = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +33,9 @@ class GetStartedScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: Image.asset(
-              'assets/images/onboarding/Getstarted.jpg',
+              _imagePath,
               fit: BoxFit.cover,
+              filterQuality: FilterQuality.high,
             ),
           ),
           Expanded(
@@ -48,7 +66,6 @@ class GetStartedScreen extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: TextStyle(color: AppColors.secondary),
                     ),
-
                     SizedBox(height: AppSizes.xxl),
                     AppButton(
                       onPressed: () {
@@ -72,8 +89,6 @@ class GetStartedScreen extends StatelessWidget {
               ),
             ),
           ),
-
-          // ButtonBarTheme(data: data, child: child),
         ],
       ),
     );

@@ -37,7 +37,7 @@ class _AllAssessmentsScreenState extends ConsumerState<AllAssessmentsScreen> {
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.chevron_left, color: AppColors.secondary, size: 28),
-          onPressed: () => context.pop(),
+          onPressed: () => context.goNamed('home'),
         ),
         title: const Text(
           'All Assessments',
